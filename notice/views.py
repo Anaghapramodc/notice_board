@@ -318,10 +318,9 @@ def user_logout(request):
 from openai import OpenAI
 from django.conf import settings
 
-client = OpenAI(
-    api_key=settings.GROQ_API_KEY,
-    base_url="https://api.groq.com/openai/v1"
-)
+import openai
+
+client = openai.OpenAI()  # will automatically use GROQ_API_KEY from env
 
 from openai import OpenAI
 from django.conf import settings
