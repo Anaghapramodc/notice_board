@@ -358,18 +358,30 @@ import json
 import os
 from openai import OpenAI
 
+import os
+from openai import OpenAI
+
+import os
+import json
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 def get_openai_client():
-    """
-    Create a new OpenAI client using the GROQ_API_KEY from environment variables.
-    Raises Exception if API key is missing.
-    """
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
-        raise Exception("GROQ_API_KEY is not set in environment variables!")
+        raise Exception("GROQ_API_KEY environment variable is not set!")
     return OpenAI(
         api_key=api_key,
         base_url="https://api.groq.com/openai/v1"
     )
+
 
 @csrf_exempt
 def chatbot(request):
@@ -381,6 +393,31 @@ def chatbot(request):
         user_message = data.get("message", "").lower().strip()
     except Exception:
         return JsonResponse({"reply": "Invalid JSON"}, status=400)
+
+    # Rule-based first...
+    rules = {...}  # your rules dict
+
+    for key in rules:
+        if all(word in user_message for word in key.split()):
+            return JsonResponse({"reply": rules[key]})
+
+    # AI fallback
+    try:
+        client = get_openai_client()
+        completion = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "system", "content": "You are a helpful college assistant."},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0.7
+        )
+        reply = completion.choices[0].message.content
+    except Exception as e:
+        print("AI ERROR:", e)
+        reply = "AI server waking up... please try again."
+
+    return JsonResponse({"reply": reply})
 
     # ================= RULE-BASED ANSWERS =================
     rules = {
