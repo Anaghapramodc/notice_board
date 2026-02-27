@@ -53,7 +53,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -102,11 +101,11 @@ WSGI_APPLICATION = 'notice_board.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('MYSQLDATABASE'),
-        'USER': os.environ.get('MYSQLUSER'),
-        'PASSWORD': os.environ.get('MYSQLPASSWORD'),
-        'HOST': os.environ.get('MYSQLHOST'),
-        'PORT': os.environ.get('MYSQLPORT'),
+        'NAME': os.environ.get('railway'),
+        'USER': os.environ.get('root'),
+        'PASSWORD': os.environ.get('VNLTiJJzfeqgLKHhKAuMVmnPlAmLuGqf'),
+        'HOST': os.environ.get('mysql.railway.internal'),
+        'PORT': os.environ.get('3306'),
     }
 }
 # Password validation
