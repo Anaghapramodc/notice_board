@@ -325,13 +325,17 @@ import openai
 from openai import OpenAI
 import os
 
-from openai import OpenAI
-import os
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from openai import OpenAI
+import os
 
 def get_openai_client():
+    """
+    Create a new OpenAI client using the GROQ_API_KEY from environment variables.
+    Raises Exception if API key is missing.
+    """
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         raise Exception("GROQ_API_KEY is not set in environment variables!")
@@ -346,10 +350,8 @@ def chatbot(request):
         data = json.loads(request.body)
         user_message = data.get("message", "").lower().strip()
 
-        # ================= RULE BASED ANSWERS =================
-
+        # ================= RULE-BASED ANSWERS =================
         rules = {
-
             # 🔹 Basic Questions
             "admission fee": "The admission fee for all courses is ₹2000.",
             "affiliation fee": "The affiliation fee is ₹600.",
@@ -390,14 +392,14 @@ def chatbot(request):
             "sanctioned strength 40": "Courses with sanctioned strength 40: B.Com with Computer Application, B.Com Marketing, B.B.A.",
         }
 
-        # 🔍 Rule Matching
+        # 🔍 Check rule-based replies first
         for key in rules:
             if all(word in user_message for word in key.split()):
                 return JsonResponse({"reply": rules[key]})
 
         # ================= AI FALLBACK =================
-
         try:
+            client = get_openai_client()
             completion = client.chat.completions.create(
                 model="llama-3.1-8b-instant",
                 messages=[
@@ -411,19 +413,9 @@ def chatbot(request):
 
         except Exception as e:
             print("AI ERROR:", e)
-            reply = "AI server waking up... try again."
+            reply = "AI server waking up... please try again."
 
         return JsonResponse({"reply": reply})
-
-def all_events(request):
-    events = Notice.objects.filter(
-        display_category='events'
-    ).order_by('-created_at')
-
-    return render(request, 'all_events.html', {
-        'events': events
-    })
-
 
 @login_required
 def update_notice(request, pk):
