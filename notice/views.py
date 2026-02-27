@@ -347,6 +347,10 @@ def update_notice(request, pk):
         'is_update': True
     })
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
