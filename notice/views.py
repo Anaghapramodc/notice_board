@@ -325,10 +325,20 @@ import openai
 from openai import OpenAI
 import os
 
-client = OpenAI(
-    api_key=os.environ.get("GROQ_API_KEY"),
-    base_url="https://api.groq.com/openai/v1"
-)
+from openai import OpenAI
+import os
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+
+def get_openai_client():
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        raise Exception("GROQ_API_KEY is not set in environment variables!")
+    return OpenAI(
+        api_key=api_key,
+        base_url="https://api.groq.com/openai/v1"
+    )
 
 @csrf_exempt
 def chatbot(request):
