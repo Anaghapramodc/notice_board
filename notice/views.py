@@ -325,98 +325,6 @@ import openai
 from openai import OpenAI
 import os
 
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-import json
-from openai import OpenAI
-import os
-
-def get_openai_client():
-    """
-    Create a new OpenAI client using the GROQ_API_KEY from environment variables.
-    Raises Exception if API key is missing.
-    """
-    api_key = os.environ.get("GROQ_API_KEY")
-    if not api_key:
-        raise Exception("GROQ_API_KEY is not set in environment variables!")
-    return OpenAI(
-        api_key=api_key,
-        base_url="https://api.groq.com/openai/v1"
-    )
-
-@csrf_exempt
-def chatbot(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        user_message = data.get("message", "").lower().strip()
-
-        # ================= RULE-BASED ANSWERS =================
-        rules = {
-            # 🔹 Basic Questions
-            "admission fee": "The admission fee for all courses is ₹2000.",
-            "affiliation fee": "The affiliation fee is ₹600.",
-            "id card fee": "The ID card fee is ₹100.",
-            "arts & sports fee": "The Arts & Sports fee is ₹500.",
-            "college union": "The College Union Activities & Magazine fee is ₹1000.",
-            "caution deposit": "The caution deposit is ₹500 (Refundable).",
-            "pta fee": "The PTA fee is ₹1600 (₹1500 for some courses).",
-
-            # 🔹 Course Specific
-            "sanctioned strength of b.sc computer science": "The sanctioned strength of B.Sc Computer Science is 35 students.",
-            "microbiology tuition fee": "The tuition fee of B.Sc Microbiology is ₹16000 per semester.",
-            "biochemistry tuition fee": "The tuition fee of B.Sc Biochemistry is ₹12000 per semester.",
-            "nil lab fee": "B.Com Marketing has NIL lab fee.",
-            "b.com tuition fee": "The tuition fee of B.Com courses is ₹9000 per semester.",
-            "b.a english tuition fee": "The tuition fee of B.A English is ₹11000 per semester.",
-            "b.a economics tuition fee": "The tuition fee of B.A Economics is ₹15000 per semester.",
-
-            # 🔹 Admission Time Fees
-            "admission time fee for b.sc computer science": "Admission time fee for B.Sc Computer Science is ₹19,200.",
-            "admission time fee for b.sc microbiology": "Admission time fee for B.Sc Microbiology is ₹23,200.",
-            "admission time fee for b.sc biotechnology": "Admission time fee for B.Sc Biotechnology is ₹20,200.",
-            "admission time fee for b.com": "Admission time fee for B.Com courses is ₹15,700.",
-            "admission time fee for b.a english": "Admission time fee for B.A English is ₹18,700.",
-            "highest admission time fee": "B.Sc Microbiology & B.A Economics have the highest admission time fee – ₹23,200.",
-
-            # 🔹 Semester Fees
-            "semester fee of b.sc computer science": "The semester fee of B.Sc Computer Science is ₹11,000.",
-            "semester fee of b.sc microbiology": "The semester fee of B.Sc Microbiology is ₹16,000.",
-            "semester fee of b.com": "The semester fee of B.Com courses is ₹9,000.",
-            "semester fee of b.a economics": "The semester fee of B.A Economics is ₹16,000.",
-            "lowest semester fee": "B.Com courses have the lowest semester fee – ₹9,000.",
-
-            # 🔹 Comparison
-            "highest tuition fee": "B.Sc Microbiology & B.A Economics have the highest tuition fee – ₹16,000 per semester.",
-            "lowest tuition fee": "B.Com courses have the lowest tuition fee – ₹9,000 per semester.",
-            "sanctioned strength 26": "Courses with sanctioned strength 26: B.Sc Biochemistry, B.Sc Biotechnology, B.A English, B.A Economics.",
-            "sanctioned strength 40": "Courses with sanctioned strength 40: B.Com with Computer Application, B.Com Marketing, B.B.A.",
-        }
-
-        # 🔍 Check rule-based replies first
-        for key in rules:
-            if all(word in user_message for word in key.split()):
-                return JsonResponse({"reply": rules[key]})
-
-        # ================= AI FALLBACK =================
-        try:
-            client = get_openai_client()
-            completion = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
-                messages=[
-                    {"role": "system", "content": "You are a helpful college assistant. Answer clearly and shortly."},
-                    {"role": "user", "content": user_message}
-                ],
-                temperature=0.7
-            )
-
-            reply = completion.choices[0].message.content
-
-        except Exception as e:
-            print("AI ERROR:", e)
-            reply = "AI server waking up... please try again."
-
-        return JsonResponse({"reply": reply})
-
 @login_required
 def update_notice(request, pk):
 
@@ -438,3 +346,95 @@ def update_notice(request, pk):
         'form': form,
         'is_update': True
     })
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+import os
+from openai import OpenAI
+
+def get_openai_client():
+    """
+    Create a new OpenAI client using the GROQ_API_KEY from environment variables.
+    Raises Exception if API key is missing.
+    """
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        raise Exception("GROQ_API_KEY is not set in environment variables!")
+    return OpenAI(
+        api_key=api_key,
+        base_url="https://api.groq.com/openai/v1"
+    )
+
+@csrf_exempt
+def chatbot(request):
+    if request.method != "POST":
+        return JsonResponse({"reply": "Invalid request method"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        user_message = data.get("message", "").lower().strip()
+    except Exception:
+        return JsonResponse({"reply": "Invalid JSON"}, status=400)
+
+    # ================= RULE-BASED ANSWERS =================
+    rules = {
+        # Basic Questions
+        "admission fee": "The admission fee for all courses is ₹2000.",
+        "affiliation fee": "The affiliation fee is ₹600.",
+        "id card fee": "The ID card fee is ₹100.",
+        "arts & sports fee": "The Arts & Sports fee is ₹500.",
+        "college union": "The College Union Activities & Magazine fee is ₹1000.",
+        "caution deposit": "The caution deposit is ₹500 (Refundable).",
+        "pta fee": "The PTA fee is ₹1600 (₹1500 for some courses).",
+        # Course Specific
+        "sanctioned strength of b.sc computer science": "The sanctioned strength of B.Sc Computer Science is 35 students.",
+        "microbiology tuition fee": "The tuition fee of B.Sc Microbiology is ₹16000 per semester.",
+        "biochemistry tuition fee": "The tuition fee of B.Sc Biochemistry is ₹12000 per semester.",
+        "nil lab fee": "B.Com Marketing has NIL lab fee.",
+        "b.com tuition fee": "The tuition fee of B.Com courses is ₹9000 per semester.",
+        "b.a english tuition fee": "The tuition fee of B.A English is ₹11000 per semester.",
+        "b.a economics tuition fee": "The tuition fee of B.A Economics is ₹15000 per semester.",
+        # Admission Time Fees
+        "admission time fee for b.sc computer science": "Admission time fee for B.Sc Computer Science is ₹19,200.",
+        "admission time fee for b.sc microbiology": "Admission time fee for B.Sc Microbiology is ₹23,200.",
+        "admission time fee for b.sc biotechnology": "Admission time fee for B.Sc Biotechnology is ₹20,200.",
+        "admission time fee for b.com": "Admission time fee for B.Com courses is ₹15,700.",
+        "admission time fee for b.a english": "Admission time fee for B.A English is ₹18,700.",
+        "highest admission time fee": "B.Sc Microbiology & B.A Economics have the highest admission time fee – ₹23,200.",
+        # Semester Fees
+        "semester fee of b.sc computer science": "The semester fee of B.Sc Computer Science is ₹11,000.",
+        "semester fee of b.sc microbiology": "The semester fee of B.Sc Microbiology is ₹16,000.",
+        "semester fee of b.com": "The semester fee of B.Com courses is ₹9,000.",
+        "semester fee of b.a economics": "The semester fee of B.A Economics is ₹16,000.",
+        "lowest semester fee": "B.Com courses have the lowest semester fee – ₹9,000.",
+        # Comparison
+        "highest tuition fee": "B.Sc Microbiology & B.A Economics have the highest tuition fee – ₹16,000 per semester.",
+        "lowest tuition fee": "B.Com courses have the lowest tuition fee – ₹9,000 per semester.",
+        "sanctioned strength 26": "Courses with sanctioned strength 26: B.Sc Biochemistry, B.Sc Biotechnology, B.A English, B.A Economics.",
+        "sanctioned strength 40": "Courses with sanctioned strength 40: B.Com with Computer Application, B.Com Marketing, B.B.A.",
+    }
+
+    # Rule-based reply first
+    for key in rules:
+        if all(word in user_message for word in key.split()):
+            return JsonResponse({"reply": rules[key]})
+
+    # ================= AI FALLBACK =================
+    try:
+        client = get_openai_client()
+        completion = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "system", "content": "You are a helpful college assistant. Answer clearly and shortly."},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0.7
+        )
+        reply = completion.choices[0].message.content
+    except Exception as e:
+        print("AI ERROR:", e)
+        reply = "AI server waking up... please try again."
+
+    return JsonResponse({"reply": reply})
