@@ -99,14 +99,15 @@ WSGI_APPLICATION = 'notice_board.wsgi.application'
 #     }
 # }
 
+# DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('railway'),
-        'USER': os.environ.get('root'),
-        'PASSWORD': os.environ.get('pNGSqfUVPUPTddOSmempuHSYURKoRtRP'),
-        'HOST': os.environ.get('mysql.railway.internal'),
-        'PORT': os.environ.get('3306'),
+        'NAME': os.environ.get('MYSQLDATABASE'),
+        'USER': os.environ.get('MYSQLUSER'),
+        'PASSWORD': os.environ.get('MYSQLPASSWORD'),
+        'HOST': os.environ.get('MYSQLHOST'),
+        'PORT': os.environ.get('MYSQLPORT'),
     }
 }
 # Password validation

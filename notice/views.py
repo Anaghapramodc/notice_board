@@ -320,13 +320,13 @@ from django.conf import settings
 
 import openai
 
-client = openai.OpenAI()  # will automatically use GROQ_API_KEY from env
+
 
 from openai import OpenAI
-from django.conf import settings
+import os
 
 client = OpenAI(
-    api_key=settings.GROQ_API_KEY,
+    api_key=os.environ.get("GROQ_API_KEY"),
     base_url="https://api.groq.com/openai/v1"
 )
 
