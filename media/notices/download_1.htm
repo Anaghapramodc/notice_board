@@ -1,0 +1,332 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick Fix Sorter — Home</title>
+
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+    <a class="brand" href="#">
+        <div class="logo">QFS</div>
+        <div>
+            <div class="brand-title">Quick Fix Sorter</div>
+            <div class="brand-sub">Report public issues fast</div>
+        </div>
+    </a>
+
+    <nav class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="actions">
+        <a href="#login" class="btn btn-outline">Log in</a>
+        <a href="#signup" class="btn btn-primary">Sign up</a>
+    </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<main class="hero-section">
+
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <h1>Fix Your Streets, Build Your Community.</h1>
+            <p>
+                The fastest bridge between citizens and municipality authorities.
+                Report, track, and resolve local issues in real-time.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#submit" class="btn btn-primary">📄 File a Complaint</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Active Reports</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="stat-item">
+            <div class="stat-number green">4</div>
+            <div class="stat-label">Resolved Issues</div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ================= DASHBOARD ================= -->
+<section class="dashboard-card">
+
+    <!-- LEFT SIDE : BAR CHART -->
+    <div class="chart-box">
+        <h3>App Usage & Resolution Speed</h3>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- RIGHT SIDE : PIE CHART -->
+    <div class="chart-box">
+        <h3>Ward Wise Solved Complaints</h3>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+</section>
+
+<!-- ================= RECENT COMPLAINTS ================= -->
+<section class="complaint-feed">
+
+<h2 class="feed-title">Recent Public Complaints</h2>
+
+<div class="feed-grid">
+
+
+<div class="complaint-card">
+
+    <div class="complaint-text">
+        <h3>Road Issue</h3>
+        <p>Traffic congestion</p>
+        <small>Ward 3</small>
+    </div>
+
+    <div class="complaint-image">
+        <img src="/media/complaints/banner.jpeg" alt="complaint">
+    </div>
+
+    <!-- MUNICIPALITY PDF CENTER -->
+
+<div class="report-attachment">
+
+    <div class="file-icon">📄</div>
+
+    <div class="file-info">
+        <div class="file-name">
+            Municipality_Report.pdf
+        </div>
+
+        <div class="file-actions">
+            <a href="/municipality/view-report/5/" target="_blank" class="open-btn">
+                View
+            </a>
+
+            <a href="" download class="download-btn">
+                Download
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</div>
+
+<div class="complaint-card">
+
+    <div class="complaint-text">
+        <h3>Street Light Issue</h3>
+        <p>Power supply and technical issue</p>
+        <small>Ward 2</small>
+    </div>
+
+    <div class="complaint-image">
+        <img src="/media/complaints/image.jpeg" alt="complaint">
+    </div>
+
+    <!-- MUNICIPALITY PDF CENTER -->
+
+<div class="report-attachment">
+
+    <div class="file-icon">📄</div>
+
+    <div class="file-info">
+        <div class="file-name">
+            Municipality_Report.pdf
+        </div>
+
+        <div class="file-actions">
+            <a href="/municipality/view-report/3/" target="_blank" class="open-btn">
+                View
+            </a>
+
+            <a href="" download class="download-btn">
+                Download
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</div>
+
+<div class="complaint-card">
+
+    <div class="complaint-text">
+        <h3>Road Issue</h3>
+        <p>Frequent road cutting</p>
+        <small>Ward 2</small>
+    </div>
+
+    <div class="complaint-image">
+        <img src="/media/complaints/hero-glamour-7_VN6XmpL.avif" alt="complaint">
+    </div>
+
+    <!-- MUNICIPALITY PDF CENTER -->
+
+<div class="report-attachment">
+
+    <div class="file-icon">📄</div>
+
+    <div class="file-info">
+        <div class="file-name">
+            Municipality_Report.pdf
+        </div>
+
+        <div class="file-actions">
+            <a href="/municipality/view-report/1/" target="_blank" class="open-btn">
+                View
+            </a>
+
+            <a href="" download class="download-btn">
+                Download
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</div>
+
+<div class="complaint-card">
+
+    <div class="complaint-text">
+        <h3>Waste Management Issue</h3>
+        <p>Waste dumping</p>
+        <small>Ward 2</small>
+    </div>
+
+    <div class="complaint-image">
+        <img src="/media/complaints/WhatsApp_Image_2026-02-11_at_2.55.19_PM_GOkw7Ty.jpeg" alt="complaint">
+    </div>
+
+    <!-- MUNICIPALITY PDF CENTER -->
+
+<div class="report-attachment">
+
+    <div class="file-icon">📄</div>
+
+    <div class="file-info">
+        <div class="file-name">
+            Municipality_Report.pdf
+        </div>
+
+        <div class="file-actions">
+            <a href="/municipality/view-report/4/" target="_blank" class="open-btn">
+                View
+            </a>
+
+            <a href="" download class="download-btn">
+                Download
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+<div class="more-btn-wrap">
+    <a href="/complaints/" class="more-btn">View More Complaints →</a>
+</div>
+
+</section>
+
+<!-- ================= CHART DATA FROM DJANGO ================= -->
+<script id="bar-labels" type="application/json">["Users", "Total Complaints", "Resolved", "Pending"]</script>
+<script id="bar-data" type="application/json">[2, 4, 4, 0]</script>
+<script id="pie-labels" type="application/json">["Ward 2", "Ward 3"]</script>
+<script id="pie-data" type="application/json">[3, 1]</script>
+
+<!-- ================= CHART JS ================= -->
+<script>
+const barLabels = JSON.parse(document.getElementById('bar-labels').textContent);
+const barData   = JSON.parse(document.getElementById('bar-data').textContent);
+const pieLabels = JSON.parse(document.getElementById('pie-labels').textContent);
+const pieData   = JSON.parse(document.getElementById('pie-data').textContent);
+
+/* BAR CHART */
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: barLabels,
+        datasets: [{
+            label: 'Complaint Statistics',
+            data: barData,
+            backgroundColor: ['#2563eb','#f59e0b','#16a34a','#dc2626'],
+            borderRadius: 10
+        }]
+    },
+    options: {
+        responsive:true,
+        plugins:{legend:{display:false}},
+        scales:{y:{beginAtZero:true}}
+    }
+});
+
+/* PIE CHART */
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: pieLabels,
+        datasets: [{
+            data: pieData,
+            backgroundColor:[
+                '#22c55e','#3b82f6','#f59e0b','#ef4444',
+                '#8b5cf6','#14b8a6','#e11d48','#0ea5e9'
+            ]
+        }]
+    },
+    options:{responsive:true}
+});
+</script>
+
+
+
+<script>
+function openReport(url){
+    document.getElementById("reportFrame").src = url;
+    document.getElementById("reportModal").style.display = "flex";
+}
+
+function closeReport(){
+    document.getElementById("reportFrame").src = "";
+    document.getElementById("reportModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
