@@ -479,3 +479,9 @@ def chatbot(request):
         reply = "AI server waking up... please try again."
 
     return JsonResponse({"reply": reply})
+
+
+@login_required
+def all_events(request):
+    events = Notice.objects.filter(display_category='events').order_by('-created_at')
+    return render(request, 'all_events.html', {'events': events})
