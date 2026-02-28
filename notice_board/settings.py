@@ -183,3 +183,17 @@ WEBPUSH_SETTINGS = {
     "VAPID_PRIVATE_KEY": "RUmO1lU4bdDBh7WnKIerOkMu_KWSNmh_WpE-7GnomnY=",
     "VAPID_ADMIN_EMAIL": "admin@sscase.edu"
 }
+
+
+
+import os
+
+if os.environ.get("RAILWAY_ENVIRONMENT"):
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser(
+            username="admin",
+            email="admin@gmail.com",
+            password="admin123"
+        )
