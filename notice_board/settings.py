@@ -176,7 +176,7 @@ import os
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = "notecast2326@gmail.com"
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
