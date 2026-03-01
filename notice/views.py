@@ -81,14 +81,18 @@ def create_notice(request):
                 users = User.objects.filter(user_type__in=['student', 'hod'])
                 recipient_list = [u.email for u in users]
 
+         
             if recipient_list:
-                send_mail(
-                    subject,
-                    message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    recipient_list,
-                    fail_silently=False,
-                )
+                    try:
+                        send_mail(
+                            subject,
+                            message,
+                            settings.DEFAULT_FROM_EMAIL,
+                            recipient_list,
+                            fail_silently=True,  # 🔥 important
+                        )
+                    except Exception as e:
+                        print("Email Error:", e)
 
             # =================================================
 
